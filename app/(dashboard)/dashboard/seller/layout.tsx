@@ -112,7 +112,7 @@ export default function SellerDashboardLayout({
         {/* Logo */}
         <div className="h-16 flex items-center px-6 border-b border-gray-200">
           <Link href="/" className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
               <span className="text-xs font-black text-white">S</span>
             </div>
             <span className="text-sm font-bold tracking-tight">SkillLink</span>
@@ -129,7 +129,7 @@ export default function SellerDashboardLayout({
         <div className="px-4 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-100">
             <Avatar className="h-9 w-9">
-              <AvatarFallback className="bg-gradient-to-br from-violet-500 to-indigo-600 text-white text-sm font-bold">
+              <AvatarFallback className="bg-gradient-to-br from-green-500 to-blue-600 text-white text-sm font-bold">
                 {user?.name?.charAt(0).toUpperCase() ?? "S"}
               </AvatarFallback>
             </Avatar>
@@ -139,7 +139,7 @@ export default function SellerDashboardLayout({
               </p>
               <p className="text-xs text-gray-500 truncate">{user?.email}</p>
             </div>
-            <Badge className="bg-violet-100 text-violet-600 border-0 text-[10px] px-2">
+            <Badge className="bg-violet-100 text-primary border-0 text-[10px] px-2">
               PRO
             </Badge>
           </div>
@@ -161,24 +161,24 @@ export default function SellerDashboardLayout({
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
                   isActive
-                    ? "bg-violet-100 text-violet-700 font-medium"
+                    ? "bg-violet-100 text-green-600 font-medium"
                     : "text-gray-500 hover:text-gray-900 hover:bg-gray-100",
                 )}
               >
                 <item.icon
                   size={17}
-                  className={isActive ? "text-violet-600" : ""}
+                  className={isActive ? "text-primary" : ""}
                 />
                 <span className="flex-1">{item.label}</span>
 
                 {item.badge && (
-                  <span className="h-5 min-w-5 flex items-center justify-center rounded-full bg-violet-500 text-white text-[10px] font-bold px-1.5">
+                  <span className="h-5 min-w-5 flex items-center justify-center rounded-full bg-green-500 text-white text-[10px] font-bold px-1.5">
                     {item.badge}
                   </span>
                 )}
 
                 {isActive && (
-                  <ChevronRight size={14} className="text-violet-600" />
+                  <ChevronRight size={14} className="text-primary" />
                 )}
               </Link>
             );

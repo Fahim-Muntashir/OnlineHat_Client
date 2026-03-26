@@ -72,7 +72,7 @@ const OrderRow = ({ order }: { order: any }) => {
     },
     DELIVERED: {
       label: "Delivered",
-      color: "text-violet-600 bg-violet-50",
+      color: "text-primary bg-violet-50",
       icon: Package,
     },
     COMPLETED: {
@@ -203,7 +203,7 @@ export default function SellerOverviewPage() {
           value={String(completedOrders.length)}
           sub="All time"
           icon={CheckCircle}
-          color="bg-violet-100 text-violet-600"
+          color="bg-violet-100 text-primary"
           trend="+3 this week"
         />
         <StatCard
@@ -225,7 +225,7 @@ export default function SellerOverviewPage() {
             </h2>
             <a
               href="/dashboard/seller/orders"
-              className="text-xs text-violet-600 hover:text-violet-700"
+              className="text-xs text-primary hover:text-violet-700"
             >
               View all →
             </a>
@@ -248,7 +248,7 @@ export default function SellerOverviewPage() {
             <h2 className="text-sm font-semibold text-gray-900">My Services</h2>
             <a
               href="/dashboard/seller/services"
-              className="text-xs text-violet-600 hover:text-violet-700"
+              className="text-xs text-primary hover:text-violet-700"
             >
               Manage →
             </a>
@@ -272,7 +272,7 @@ export default function SellerOverviewPage() {
                   className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition"
                 >
                   <div className="h-8 w-8 rounded-lg bg-violet-100 flex items-center justify-center">
-                    <TrendingUp size={14} className="text-violet-600" />
+                    <TrendingUp size={14} className="text-primary" />
                   </div>
 
                   <div className="flex-1 min-w-0">

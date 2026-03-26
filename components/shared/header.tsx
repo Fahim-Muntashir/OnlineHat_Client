@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ChevronDown, User } from "lucide-react";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -45,14 +46,19 @@ export default function Header() {
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 text-foreground hover:text-primary transition text-sm hover:bg-secondary/50 px-3 py-2 rounded-lg">
+            <Link href={"/login"}>
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 text-sm font-medium transition-all hover:shadow-lg hover:scale-105">
+                Login
+              </Button>
+            </Link>
+            {/* <button className="flex items-center gap-2 text-foreground hover:text-primary transition text-sm hover:bg-secondary/50 px-3 py-2 rounded-lg">
               <User className="w-4 h-4" />
               <span className="hidden sm:inline">Alex Wong</span>
               <ChevronDown className="w-4 h-4" />
             </button>
             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 text-sm font-medium transition-all hover:shadow-lg hover:scale-105">
               Post a Job
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

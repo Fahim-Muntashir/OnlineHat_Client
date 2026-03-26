@@ -13,7 +13,7 @@ export const AuthService = {
   },
 
   register: async (payload: RegisterPayload): Promise<AuthResponse> => {
-    const res = await axiosInstance.post("/auth/register", payload);
+    const res = await axiosInstance.post("/users/register", payload);
     return res.data;
   },
 };

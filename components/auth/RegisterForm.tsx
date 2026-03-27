@@ -32,6 +32,7 @@ const passwordSchema = z
   .string()
   .min(6, "Password must be at least 6 characters");
 const roleSchema = z.enum(["BUYER", "SELLER"], { error: "Select a role" });
+
 // helper to safely extract error message
 const getError = (errors: any[]): string | null => {
   if (!errors?.length) return null;

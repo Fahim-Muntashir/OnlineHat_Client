@@ -46,7 +46,7 @@ function CancelContent() {
     </div>
   );
 }
-
+// what is the suspence
 export default function PaymentCancelPage() {
   return (
     <Suspense>

@@ -1,7 +1,7 @@
 // app/(commonlayout)/layout.tsx
 
 import Footer from "@/components/shared/footer";
-import Header from "@/components/shared/header";
+import { Navbar } from "@/components/shared/navbar";
 
 export default async function CommonLayout({
   children,
@@ -10,7 +10,7 @@ export default async function CommonLayout({
 }) {
   return (
     <div>
-      <Header></Header>
+      <Navbar></Navbar>
       {children}
       <Footer></Footer>
     </div>

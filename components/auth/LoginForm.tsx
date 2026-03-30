@@ -6,19 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useState } from "react";
 import { AuthService } from "@/services/auth.service";
 import { AuthStore } from "@/store/authStore";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import Link from "next/link";
+import { Eye, EyeOff, ArrowRight, Loader2, Zap } from "lucide-react";
 
 const emailSchema = z.string().email("Invalid email address");
 const passwordSchema = z
@@ -27,12 +19,14 @@ const passwordSchema = z
 
 export const LoginForm = () => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const { mutate: login, isPending } = useMutation({
     mutationFn: AuthService.login,
     onSuccess: (data) => {
       AuthStore.saveAuth(data.data.accessToken, data.data.user);
-      toast.success("Login successful");
+      toast.success("Welcome back!");
       const role = data.data.user.role;
       if (role === "ADMIN") router.push("/dashboard/admin");
       else if (role === "SELLER") router.push("/dashboard/seller");
@@ -44,108 +38,311 @@ export const LoginForm = () => {
   });
 
   const form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
     onSubmit: ({ value }) => login(value),
   });
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-        <CardDescription>Login to your Online Hat account</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            form.handleSubmit();
+    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 px-4 relative overflow-hidden">
+      {/* Animated background blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute -top-32 -left-32 w-96 h-96 rounded-full opacity-20 animate-pulse"
+          style={{
+            background:
+              "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)",
+            animationDuration: "4s",
           }}
-          className="space-y-4"
-        >
-          {/* Email */}
-          <form.Field
-            name="email"
-            validators={{
-              onChange: ({ value }) => {
-                const result = emailSchema.safeParse(value);
-                return result.success
-                  ? undefined
-                  : result.error.issues[0].message;
-              },
-            }}
-          >
-            {(field) => (
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  disabled={isPending}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                />
-                {field.state.meta.errors?.[0] && (
-                  <p className="text-sm text-destructive">
-                    {field.state.meta.errors[0].toString()}
-                  </p>
-                )}
+        />
+        <div
+          className="absolute -bottom-32 -right-32 w-80 h-80 rounded-full opacity-15 animate-pulse"
+          style={{
+            background:
+              "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)",
+            animationDuration: "6s",
+            animationDelay: "2s",
+          }}
+        />
+        <div
+          className="absolute top-1/2 left-1/4 w-64 h-64 rounded-full opacity-10 animate-pulse"
+          style={{
+            background:
+              "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)",
+            animationDuration: "5s",
+            animationDelay: "1s",
+          }}
+        />
+      </div>
+
+      {/* Card */}
+      <div
+        className="relative w-full max-w-md"
+        style={{
+          animation: "slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        }}
+      >
+        <style>{`
+          @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          .field-1 { animation: fadeIn 0.4s ease forwards; animation-delay: 0.1s; opacity: 0; }
+          .field-2 { animation: fadeIn 0.4s ease forwards; animation-delay: 0.2s; opacity: 0; }
+          .field-3 { animation: fadeIn 0.4s ease forwards; animation-delay: 0.3s; opacity: 0; }
+          .field-4 { animation: fadeIn 0.4s ease forwards; animation-delay: 0.4s; opacity: 0; }
+          .shimmer {
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+          }
+          @keyframes shimmer {
+            from { background-position: -200% 0; }
+            to   { background-position: 200% 0; }
+          }
+        `}</style>
+
+        <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/80 border border-slate-100 overflow-hidden">
+          {/* Top accent bar */}
+          <div className="h-1.5 w-full bg-gradient-to-r from-primary/60 via-primary to-primary/60" />
+
+          <div className="px-8 pt-8 pb-10">
+            {/* Header */}
+            <div className="mb-8">
+              <div className="field-1 flex items-center gap-2 mb-5">
+                <div className="h-8 w-8 rounded-xl bg-primary flex items-center justify-center shadow-md shadow-primary/30">
+                  <Zap size={16} className="text-white fill-white" />
+                </div>
+                <span className="text-sm font-bold text-primary tracking-tight">
+                  Online Hat
+                </span>
               </div>
-            )}
-          </form.Field>
+              <h1 className="field-2 text-2xl font-black text-slate-900 tracking-tight">
+                Welcome back
+              </h1>
+              <p className="field-2 text-sm text-slate-400 mt-1">
+                Sign in to continue to your account
+              </p>
+            </div>
 
-          {/* Password */}
-          <form.Field
-            name="password"
-            validators={{
-              onChange: ({ value }) => {
-                const result = passwordSchema.safeParse(value);
-                return result.success
-                  ? undefined
-                  : result.error.issues[0].message;
-              },
-            }}
-          >
-            {(field) => (
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  disabled={isPending}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                />
-                {field.state.meta.errors?.[0] && (
-                  <p className="text-sm text-destructive">
-                    {field.state.meta.errors[0].toString()}
-                  </p>
-                )}
+            {/* Form */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                form.handleSubmit();
+              }}
+              className="space-y-5"
+            >
+              {/* Email field */}
+              <div className="field-3">
+                <form.Field
+                  name="email"
+                  validators={{
+                    onChange: ({ value }) => {
+                      const result = emailSchema.safeParse(value);
+                      return result.success
+                        ? undefined
+                        : result.error.issues[0].message;
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <div className="space-y-1.5">
+                      <label
+                        htmlFor="email"
+                        className={`text-xs font-semibold uppercase tracking-wider transition-colors duration-200 ${
+                          focusedField === "email"
+                            ? "text-primary"
+                            : "text-slate-400"
+                        }`}
+                      >
+                        Email Address
+                      </label>
+                      <div
+                        className={`relative rounded-xl border-2 transition-all duration-200 ${
+                          focusedField === "email"
+                            ? "border-primary shadow-lg shadow-primary/10 bg-primary/[0.02]"
+                            : field.state.meta.errors?.[0]
+                              ? "border-red-300 bg-red-50/50"
+                              : "border-slate-100 bg-slate-50 hover:border-slate-200"
+                        }`}
+                      >
+                        <input
+                          id="email"
+                          type="email"
+                          placeholder="you@example.com"
+                          disabled={isPending}
+                          value={field.state.value}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          onFocus={() => setFocusedField("email")}
+                          onBlur={() => {
+                            setFocusedField(null);
+                            field.handleBlur();
+                          }}
+                          className="w-full px-4 py-3 bg-transparent text-sm text-slate-800 placeholder:text-slate-300 outline-none rounded-xl disabled:opacity-50"
+                        />
+                      </div>
+                      {field.state.meta.errors?.[0] && (
+                        <p className="text-xs text-red-500 flex items-center gap-1 ml-1">
+                          <span className="inline-block h-1 w-1 rounded-full bg-red-500" />
+                          {field.state.meta.errors[0].toString()}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </form.Field>
               </div>
-            )}
-          </form.Field>
 
-          <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "Logging in..." : "Login"}
-          </Button>
-        </form>
+              {/* Password field */}
+              <div className="field-3">
+                <form.Field
+                  name="password"
+                  validators={{
+                    onChange: ({ value }) => {
+                      const result = passwordSchema.safeParse(value);
+                      return result.success
+                        ? undefined
+                        : result.error.issues[0].message;
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <label
+                          htmlFor="password"
+                          className={`text-xs font-semibold uppercase tracking-wider transition-colors duration-200 ${
+                            focusedField === "password"
+                              ? "text-primary"
+                              : "text-slate-400"
+                          }`}
+                        >
+                          Password
+                        </label>
+                        <Link
+                          href="/forgot-password"
+                          className="text-xs text-primary hover:text-primary/70 transition-colors font-medium"
+                        >
+                          Forgot password?
+                        </Link>
+                      </div>
+                      <div
+                        className={`relative rounded-xl border-2 transition-all duration-200 ${
+                          focusedField === "password"
+                            ? "border-primary shadow-lg shadow-primary/10 bg-primary/[0.02]"
+                            : field.state.meta.errors?.[0]
+                              ? "border-red-300 bg-red-50/50"
+                              : "border-slate-100 bg-slate-50 hover:border-slate-200"
+                        }`}
+                      >
+                        <input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          disabled={isPending}
+                          value={field.state.value}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          onFocus={() => setFocusedField("password")}
+                          onBlur={() => {
+                            setFocusedField(null);
+                            field.handleBlur();
+                          }}
+                          className="w-full px-4 py-3 pr-12 bg-transparent text-sm text-slate-800 placeholder:text-slate-300 outline-none rounded-xl disabled:opacity-50"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((p) => !p)}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors p-1"
+                        >
+                          {showPassword ? (
+                            <EyeOff size={15} />
+                          ) : (
+                            <Eye size={15} />
+                          )}
+                        </button>
+                      </div>
+                      {field.state.meta.errors?.[0] && (
+                        <p className="text-xs text-red-500 flex items-center gap-1 ml-1">
+                          <span className="inline-block h-1 w-1 rounded-full bg-red-500" />
+                          {field.state.meta.errors[0].toString()}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </form.Field>
+              </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-4">
-          Don&apos;t have an account?{" "}
+              {/* Submit button */}
+              <div className="field-4 pt-1">
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="relative w-full h-12 rounded-xl bg-primary text-white font-semibold text-sm overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  {/* Shimmer effect on hover */}
+                  <span className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  <span className="relative flex items-center justify-center gap-2">
+                    {isPending ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Signing in...
+                      </>
+                    ) : (
+                      <>
+                        Sign In
+                        <ArrowRight
+                          size={16}
+                          className="transition-transform duration-200 group-hover:translate-x-1"
+                        />
+                      </>
+                    )}
+                  </span>
+                </button>
+              </div>
+            </form>
+
+            {/* Divider */}
+            <div className="field-4 flex items-center gap-4 my-6">
+              <div className="flex-1 h-px bg-slate-100" />
+              <span className="text-xs text-slate-300 font-medium">OR</span>
+              <div className="flex-1 h-px bg-slate-100" />
+            </div>
+
+            {/* Register link */}
+            <p className="field-4 text-center text-sm text-slate-400">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/register"
+                className="text-primary font-semibold hover:text-primary/70 transition-colors"
+              >
+                Create one free
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom caption */}
+        <p className="text-center text-xs text-slate-400 mt-5">
+          By signing in, you agree to our{" "}
           <Link
-            href="/register"
-            className="text-primary hover:underline font-medium"
+            href="/terms"
+            className="underline hover:text-slate-600 transition-colors"
           >
-            Register
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/privacy"
+            className="underline hover:text-slate-600 transition-colors"
+          >
+            Privacy Policy
           </Link>
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };

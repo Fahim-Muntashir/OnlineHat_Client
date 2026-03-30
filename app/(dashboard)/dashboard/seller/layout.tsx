@@ -115,7 +115,7 @@ export default function SellerDashboardLayout({
             <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
               <span className="text-xs font-black text-white">S</span>
             </div>
-            <span className="text-sm font-bold tracking-tight">SkillLink</span>
+            <span className="text-sm font-bold tracking-tight">Online Hat</span>
           </Link>
           <button
             className="ml-auto lg:hidden text-gray-400 hover:text-gray-900"

@@ -142,10 +142,10 @@ export function FeaturesSection() {
             Our Advantage
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Why Choose FreelanceHub?
+            Why Choose Online Hat?
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            We built FreelanceHub to solve the problems every freelancer and
+            We built Online Hat to solve the problems every freelancer and
             client faces on other platforms.
           </p>
         </div>

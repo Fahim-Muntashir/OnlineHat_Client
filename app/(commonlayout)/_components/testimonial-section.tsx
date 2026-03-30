@@ -17,7 +17,7 @@ const testimonials: Testimonial[] = [
   {
     id: "1",
     quote:
-      "FreelanceHub transformed how we hire. We found the perfect fit and shipped our MVP in 3 weeks. Absolutely world-class platform.",
+      "Online Hat transformed how we hire. We found the perfect fit and shipped our MVP in 3 weeks. Absolutely world-class platform.",
     author: "Rachael Kim",
     role: "Founder, LeverTech AI",
     avatar: "RK",
@@ -27,7 +27,7 @@ const testimonials: Testimonial[] = [
   {
     id: "3",
     quote:
-      "We hired a full data science team through FreelanceHub for an ambitious analysis project. The talent was outstanding and the platform made managing contracts effortless.",
+      "We hired a full data science team through Online Hat for an ambitious analysis project. The talent was outstanding and the platform made managing contracts effortless.",
     author: "Anita Osei",
     role: "CTO, DataWise",
     avatar: "AO",
@@ -37,7 +37,7 @@ const testimonials: Testimonial[] = [
   {
     id: "3",
     quote:
-      "We hired a full data science team through FreelanceHub for an ambitious analysis project. The talent was outstanding and the platform made managing contracts effortless.",
+      "We hired a full data science team through Online Hat for an ambitious analysis project. The talent was outstanding and the platform made managing contracts effortless.",
     author: "Anita Osei",
     role: "CTO, DataWise",
     avatar: "AO",
@@ -47,7 +47,7 @@ const testimonials: Testimonial[] = [
   {
     id: "4",
     quote:
-      "Using FreelanceHub increased my hourly rate in the first 4 months. This job quality here is leagues above other platforms. Expect better projects and higher pay.",
+      "Using Online Hat increased my hourly rate in the first 4 months. This job quality here is leagues above other platforms. Expect better projects and higher pay.",
     author: "James Patel",
     role: "Freelance Developer",
     avatar: "JP",
@@ -57,7 +57,7 @@ const testimonials: Testimonial[] = [
   {
     id: "5",
     quote:
-      "I worked with top writer through FreelanceHub. The whole process — from posting to first draft — took less than a week.",
+      "I worked with top writer through Online Hat. The whole process — from posting to first draft — took less than a week.",
     author: "Lucia Ferrari",
     role: "Marketing Director, Boom Co",
     avatar: "LF",
@@ -67,7 +67,7 @@ const testimonials: Testimonial[] = [
   {
     id: "5",
     quote:
-      "I worked with top writer through FreelanceHub. The whole process — from posting to first draft — took less than a week.",
+      "I worked with top writer through Online Hat. The whole process — from posting to first draft — took less than a week.",
     author: "Lucia Ferrari",
     role: "Marketing Director, Boom Co",
     avatar: "LF",
@@ -173,7 +173,7 @@ export function TestimonialsSection() {
             Loved by Clients & Freelancers
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Thousands of people have found their ideal match on FreelanceHub.
+            Thousands of people have found their ideal match on Online Hat.
             Here&apos;s what they say.
           </p>
         </div>

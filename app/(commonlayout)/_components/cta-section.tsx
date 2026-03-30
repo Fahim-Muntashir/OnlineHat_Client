@@ -50,8 +50,8 @@ export function CTASection() {
             Ready to get started?
           </h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-            Join over 50,000 freelancers and 30,000 clients who trust
-            FreelanceHub to power their careers and businesses.
+            Join over 50,000 freelancers and 30,000 clients who trust Online Hat
+            to power their careers and businesses.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

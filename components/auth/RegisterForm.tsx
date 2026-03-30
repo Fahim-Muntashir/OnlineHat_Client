@@ -78,7 +78,7 @@ export const RegisterForm = () => {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Create account</CardTitle>
-        <CardDescription>Join SkillLink as a buyer or seller</CardDescription>
+        <CardDescription>Join Online Hat as a buyer or seller</CardDescription>
       </CardHeader>
       <CardContent>
         <form

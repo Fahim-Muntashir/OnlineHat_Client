@@ -82,7 +82,7 @@ function PaymentContent() {
       <header className="bg-white border-b border-slate-100 sticky top-0 z-30 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center gap-3">
           <Link href="/" className="text-lg font-bold text-primary">
-            SkillLink
+            Online Hat
           </Link>
           <span className="text-slate-300">/</span>
           <span className="text-sm text-slate-500">Payment</span>

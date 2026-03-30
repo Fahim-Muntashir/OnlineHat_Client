@@ -55,7 +55,7 @@ export const LoginForm = () => {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-        <CardDescription>Login to your SkillLink account</CardDescription>
+        <CardDescription>Login to your Online Hat account</CardDescription>
       </CardHeader>
       <CardContent>
         <form

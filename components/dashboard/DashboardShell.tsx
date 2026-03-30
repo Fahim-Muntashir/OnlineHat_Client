@@ -104,7 +104,7 @@ export function DashboardShell({
               <span className="text-xs font-black text-white">S</span>
             </div>
             <span className="text-sm font-bold text-slate-800 tracking-tight">
-              SkillLink
+              Online Hat
             </span>
           </Link>
           <button

@@ -7,7 +7,7 @@ import { Providers } from "@/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SkillLink Marketplace",
+  title: "Online Hat Marketplace",
   description: "Hire experts or sell your skills",
 };
 

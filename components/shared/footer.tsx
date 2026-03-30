@@ -13,7 +13,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-foreground text-lg font-bold">
                 FH
               </div>
-              <span className="font-bold text-lg">FreelanceHub</span>
+              <span className="font-bold text-lg">Online Hat</span>
             </div>
             <p className="text-sm text-primary-foreground/70">
               Connecting talented professionals with amazing opportunities
@@ -164,7 +164,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-primary-foreground/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/70">
-          <p>&copy; 2024 FreelanceHub. All rights reserved.</p>
+          <p>&copy; 2024 Online Hat. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-primary-foreground transition">
               Privacy Policy

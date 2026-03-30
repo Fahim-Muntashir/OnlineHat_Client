@@ -131,7 +131,7 @@ export default function ServiceDetailPage() {
       <header className="bg-white border-b border-slate-100 sticky top-0 z-30 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
           <Link href="/" className="text-lg font-bold text-primary">
-            SkillLink
+            Online Hat
           </Link>
           <span className="text-slate-300">/</span>
           <Link

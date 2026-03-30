@@ -40,7 +40,7 @@ export const Navbar = () => {
     <header className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="text-2xl font-black text-primary">
-          SkillLink
+          Online Hat
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm text-slate-500">

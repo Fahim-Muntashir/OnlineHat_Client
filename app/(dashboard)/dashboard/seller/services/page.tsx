@@ -132,9 +132,9 @@ export default function SellerServicesPage() {
                 <div className="absolute top-2 right-2">
                   <DropdownMenu>
                     <DropdownMenuTrigger>
-                      <button className="h-7 w-7 rounded-lg bg-white/80 backdrop-blur flex items-center justify-center text-gray-600 hover:text-gray-900">
+                      <span className="h-7 w-7 flex items-center justify-center">
                         <MoreVertical size={14} />
-                      </button>
+                      </span>
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent

@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
+import { AuthStore } from "@/store/authStore";
 import { toast } from "sonner";
 import { useState } from "react";
 import Link from "next/link";
@@ -29,12 +30,25 @@ export default function SellerServicesPage() {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  // ✅ Step 1 — get seller profile to get sellerId
+  const { data: profileData } = useQuery({
+    queryKey: ["seller-profile-me"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/seller-profiles/me");
+      return res.data;
+    },
+  });
+
+  const sellerId = profileData?.data?.id;
+
+  // ✅ Step 2 — get ALL services then filter by sellerId
   const { data, isLoading } = useQuery({
-    queryKey: ["seller-services"],
+    queryKey: ["seller-services", sellerId],
     queryFn: async () => {
       const res = await axiosInstance.get("/services");
       return res.data;
     },
+    enabled: !!sellerId, // wait until we have sellerId
   });
 
   const { mutate: deleteService } = useMutation({
@@ -49,7 +63,9 @@ export default function SellerServicesPage() {
     onError: () => toast.error("Failed to delete service"),
   });
 
-  const services = data?.data ?? [];
+  // ✅ Step 3 — filter only THIS seller's services
+  const allServices = data?.data ?? [];
+  const services = allServices.filter((s: any) => s.sellerId === sellerId);
 
   return (
     <div className="space-y-6 max-w-6xl">
@@ -62,9 +78,8 @@ export default function SellerServicesPage() {
             published
           </p>
         </div>
-
         <Link href="/dashboard/seller/services/new">
-          <Button className="bg-primary hover:bg-primary-500 text-white gap-2">
+          <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
             <Plus size={16} />
             New Service
           </Button>
@@ -86,19 +101,17 @@ export default function SellerServicesPage() {
       {/* Empty */}
       {!isLoading && services.length === 0 && (
         <div className="bg-white border border-gray-200 rounded-2xl p-16 text-center space-y-4">
-          <div className="h-14 w-14 rounded-2xl bg-violet-100 flex items-center justify-center mx-auto">
+          <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
             <Package size={24} className="text-primary" />
           </div>
-
           <div>
             <p className="text-gray-900 font-semibold">No services yet</p>
             <p className="text-gray-500 text-sm mt-1">
               Create your first service and start earning
             </p>
           </div>
-
           <Link href="/dashboard/seller/services/new">
-            <Button className="bg-violet-600 hover:bg-violet-500 text-white gap-2 mt-2">
+            <Button className="bg-primary hover:bg-primary/90 text-white gap-2 mt-2">
               <Plus size={16} />
               Create Service
             </Button>
@@ -131,17 +144,13 @@ export default function SellerServicesPage() {
                 {/* Dropdown */}
                 <div className="absolute top-2 right-2">
                   <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <span className="h-7 w-7 flex items-center justify-center">
-                        <MoreVertical size={14} />
-                      </span>
+                    <DropdownMenuTrigger className="h-7 w-7 rounded-lg bg-white/90 flex items-center justify-center text-gray-500 hover:text-gray-700 shadow-sm outline-none">
+                      <MoreVertical size={14} />
                     </DropdownMenuTrigger>
-
                     <DropdownMenuContent
                       align="end"
                       className="bg-white border border-gray-200 text-gray-900"
                     >
-                      {/* ✅ FIXED: use router instead of Link */}
                       <DropdownMenuItem
                         onClick={() =>
                           router.push(
@@ -153,7 +162,6 @@ export default function SellerServicesPage() {
                         <Pencil size={13} />
                         Edit
                       </DropdownMenuItem>
-
                       <DropdownMenuItem
                         className="text-red-600 focus:text-red-600 flex items-center gap-2 cursor-pointer"
                         onClick={() => {
@@ -183,7 +191,6 @@ export default function SellerServicesPage() {
                 <h3 className="text-sm font-semibold text-gray-900 line-clamp-2">
                   {service.title}
                 </h3>
-
                 <div className="flex items-center gap-1.5">
                   <Star size={12} className="text-amber-500 fill-amber-500" />
                   <span className="text-xs text-gray-600">
@@ -194,7 +201,6 @@ export default function SellerServicesPage() {
                     {service.totalReviews ?? 0} reviews
                   </span>
                 </div>
-
                 {service.packages?.length > 0 && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-500">From</span>
@@ -203,10 +209,9 @@ export default function SellerServicesPage() {
                     </span>
                   </div>
                 )}
-
                 <Link
                   href={`/dashboard/seller/services/${service.id}/edit`}
-                  className="flex items-center gap-1.5 text-xs text-primary hover:text-violet-700"
+                  className="flex items-center gap-1.5 text-xs text-primary hover:text-primary/70 transition-colors"
                 >
                   <Pencil size={11} />
                   Edit service

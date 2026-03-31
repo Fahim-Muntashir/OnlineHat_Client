@@ -12,7 +12,6 @@ import { CTASection } from "./_components/cta-section";
 import HowItWorks from "./_components/how-it-works";
 import { TestimonialsSection } from "./_components/testimonial-section";
 import FeaturedFreelancers from "./_components/featured-freelancer";
-import Categories from "./_components/categories";
 import { FeaturesSection } from "./_components/features-section";
 
 export default function HomePage() {
@@ -41,7 +40,6 @@ export default function HomePage() {
       <HeroSection />
       <StatsSection servicesCount={services.length} />
       <CategoriesSection categories={categories} />
-      <Categories></Categories>
       <Stats></Stats>
       <FeaturesSection></FeaturesSection>
       <TestimonialsSection></TestimonialsSection>

@@ -10,7 +10,7 @@ import { useState } from "react";
 import { AuthService } from "@/services/auth.service";
 import { AuthStore } from "@/store/authStore";
 import Link from "next/link";
-import { Eye, EyeOff, ArrowRight, Loader2, Zap } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Loader2, Zap, ShieldCheck, User, Users } from "lucide-react";
 
 const emailSchema = z.string().email("Invalid email address");
 const passwordSchema = z
@@ -310,6 +310,56 @@ export const LoginForm = () => {
               <div className="flex-1 h-px bg-slate-100" />
               <span className="text-xs text-slate-300 font-medium">OR</span>
               <div className="flex-1 h-px bg-slate-100" />
+            </div>
+
+            {/* Demo Credentials */}
+            <div className="field-4 mt-2 mb-6">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 text-center">
+                Quick Demo Access
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    form.setFieldValue("email", "admin@skilllink.com");
+                    form.setFieldValue("password", "Admin123!");
+                  }}
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-xl border border-slate-100 bg-slate-50/50 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                >
+                  <div className="h-8 w-8 rounded-lg bg-rose-50 flex items-center justify-center text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors shadow-sm">
+                    <ShieldCheck size={16} />
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-500 group-hover:text-primary transition-colors">Admin</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    form.setFieldValue("email", "seller@skilllink.com");
+                    form.setFieldValue("password", "Seller123!");
+                  }}
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-xl border border-slate-100 bg-slate-50/50 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                >
+                  <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors shadow-sm">
+                    <Users size={16} />
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-500 group-hover:text-primary transition-colors">Seller</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    form.setFieldValue("email", "buyer@skilllink.com");
+                    form.setFieldValue("password", "Buyer123!");
+                  }}
+                  className="flex flex-col items-center gap-1.5 p-2 rounded-xl border border-slate-100 bg-slate-50/50 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                >
+                  <div className="h-8 w-8 rounded-lg bg-sky-50 flex items-center justify-center text-sky-500 group-hover:bg-sky-500 group-hover:text-white transition-colors shadow-sm">
+                    <User size={16} />
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-500 group-hover:text-primary transition-colors">Buyer</span>
+                </button>
+              </div>
             </div>
 
             {/* Register link */}

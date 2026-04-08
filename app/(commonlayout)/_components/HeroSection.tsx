@@ -8,14 +8,17 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { SearchSuggestions } from "@/components/shared/SearchSuggestions";
 
 export function HeroSection() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      router.push(`/services?search=${encodeURIComponent(searchQuery)}`);
+  const handleSearch = (query?: string) => {
+    const q = query ?? searchQuery;
+    if (q.trim()) {
+      router.push(`/services?search=${encodeURIComponent(q)}`);
     } else {
       router.push("/services");
     }
@@ -56,11 +59,22 @@ export function HeroSection() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setTimeout(() => setIsFocused(false), 200)}
               className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:bg-white/20 focus:border-white/40 h-12"
+            />
+            <SearchSuggestions
+              query={searchQuery}
+              isVisible={isFocused}
+              onSelect={(s) => {
+                setSearchQuery(s);
+                handleSearch(s);
+              }}
+              className="mt-1"
             />
           </div>
           <Button
-            onClick={handleSearch}
+            onClick={() => handleSearch()}
             className="bg-primary hover:bg-primary/90 text-white h-12 px-6 font-semibold shrink-0"
           >
             Search

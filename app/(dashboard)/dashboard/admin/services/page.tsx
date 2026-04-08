@@ -9,10 +9,12 @@ import { Search, Trash2, Star, ImageOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useDebounce } from "@/hooks/use-debounce";
 
 export default function AdminServicesPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-services"],
@@ -35,7 +37,7 @@ export default function AdminServicesPage() {
 
   const services = data?.data ?? [];
   const filtered = services.filter((s: any) =>
-    s.title?.toLowerCase().includes(search.toLowerCase()),
+    s.title?.toLowerCase().includes(debouncedSearch.toLowerCase()),
   );
 
   return (

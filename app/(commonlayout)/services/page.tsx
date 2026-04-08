@@ -3,7 +3,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Search,
@@ -19,6 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useDebounce } from "@/hooks/use-debounce";
+import { SearchSuggestions } from "@/components/shared/SearchSuggestions";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -116,6 +118,14 @@ export default function ServicesPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const debouncedSearchInput = useDebounce(searchInput, 500);
+
+  // Update search state when debounced input changes
+  useEffect(() => {
+    setSearch(debouncedSearchInput);
+    setPage(1);
+  }, [debouncedSearchInput]);
 
   const { data: categoriesData } = useQuery({
     queryKey: ["categories"],
@@ -215,9 +225,23 @@ export default function ServicesPage() {
                 if (e.key === "Enter") {
                   setSearch(searchInput);
                   setPage(1);
+                  setIsFocused(false);
                 }
               }}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setTimeout(() => setIsFocused(false), 200)}
               className="pl-9 bg-slate-50 border-slate-200 focus:border-primary/50"
+            />
+            <SearchSuggestions
+              query={searchInput}
+              isVisible={isFocused}
+              onSelect={(s) => {
+                setSearchInput(s);
+                setSearch(s);
+                setPage(1);
+                setIsFocused(false);
+              }}
+              className="mt-1"
             />
           </div>
           <Button

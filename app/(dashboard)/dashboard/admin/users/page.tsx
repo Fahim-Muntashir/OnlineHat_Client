@@ -9,6 +9,7 @@ import { Search, Trash2, Shield, ShoppingBag, Briefcase } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useDebounce } from "@/hooks/use-debounce";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -33,6 +34,7 @@ export default function AdminUsersPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("ALL");
+  const debouncedSearch = useDebounce(search, 500);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-users"],
@@ -56,8 +58,8 @@ export default function AdminUsersPage() {
   const users = data?.data ?? [];
   const filtered = users.filter((u: any) => {
     const matchSearch =
-      u.name?.toLowerCase().includes(search.toLowerCase()) ||
-      u.email?.toLowerCase().includes(search.toLowerCase());
+      u.name?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      u.email?.toLowerCase().includes(debouncedSearch.toLowerCase());
     const matchRole = roleFilter === "ALL" || u.role === roleFilter;
     return matchSearch && matchRole;
   });

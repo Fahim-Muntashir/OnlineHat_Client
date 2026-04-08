@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { SearchSuggestions } from "@/components/shared/SearchSuggestions";
+import { motion } from "framer-motion";
 
 export function HeroSection() {
   const router = useRouter();
@@ -27,13 +28,28 @@ export function HeroSection() {
   return (
     <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-primary/90 text-white pt-20 pb-24 px-4 relative overflow-hidden">
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-white translate-x-32 -translate-y-16" />
-        <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-primary -translate-x-16 translate-y-16" />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.05, scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute top-0 right-0 h-96 w-96 rounded-full bg-white translate-x-32 -translate-y-16" 
+        />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.05, scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+          className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-primary -translate-x-16 translate-y-16" 
+        />
       </div>
 
-      <div className="max-w-4xl mx-auto text-center space-y-7 relative z-10">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="max-w-4xl mx-auto text-center space-y-7 relative z-10"
+      >
         <Badge className="bg-white/10 text-white border-white/20 text-xs px-3 py-1">
-          🚀 Bangladesh's #1 Freelance Marketplace
+          🚀 Bangladesh&apos;s #1 Freelance Marketplace
         </Badge>
 
         <h1 className="text-5xl md:text-6xl font-black leading-tight">
@@ -93,7 +109,7 @@ export function HeroSection() {
             </Link>
           ))}
         </p>
-      </div>
+      </motion.div>
     </section>
   );
 }

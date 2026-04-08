@@ -13,6 +13,7 @@ import HowItWorks from "./_components/how-it-works";
 import { TestimonialsSection } from "./_components/testimonial-section";
 import FeaturedFreelancers from "./_components/featured-freelancer";
 import { FeaturesSection } from "./_components/features-section";
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   const { data: servicesData } = useQuery({
@@ -36,26 +37,106 @@ export default function HomePage() {
   const featured = services.slice(0, 8);
 
   return (
-    <div className=" bg-white">
+    <div className=" bg-white overflow-x-hidden">
       <HeroSection />
-      <StatsSection servicesCount={services.length} />
-      <CategoriesSection categories={categories} />
-      <Stats></Stats>
-      <FeaturesSection></FeaturesSection>
-      <TestimonialsSection></TestimonialsSection>
-      <FeaturedFreelancers></FeaturedFreelancers>
-      <HowItWorks></HowItWorks>
-      <CTASection></CTASection>
-      {/* <ServicesSection
-        title="Featured Services"
-        subtitle="Hand-picked top services"
-        services={featured}
-      />
-      <ServicesSection
-        title="⭐ Top Rated"
-        subtitle="Highest rated by buyers"
-        services={topRated.slice(0, 4)}
-      /> */}
+      
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <StatsSection servicesCount={services.length} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <CategoriesSection categories={categories} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <Stats />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <FeaturesSection />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        <TestimonialsSection />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <FeaturedFreelancers />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <HowItWorks />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+      >
+        <CTASection />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <ServicesSection
+          title="Featured Services"
+          subtitle="Hand-picked top services"
+          services={featured}
+        />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <ServicesSection
+          title="⭐ Top Rated"
+          subtitle="Highest rated by buyers"
+          services={topRated.slice(0, 4)}
+        />
+      </motion.div>
     </div>
   );
 }

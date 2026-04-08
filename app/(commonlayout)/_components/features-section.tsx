@@ -1,163 +1,96 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import {
-  Shield,
-  DollarSign,
-  Clock,
-  Zap,
-  Headphones,
-  Globe,
-} from "lucide-react";
+import { Shield, DollarSign, Clock, Headphones, Globe, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
 
-interface FeatureCard {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  color: string;
-}
-
-const features: FeatureCard[] = [
+const features = [
   {
-    icon: <Shield className="w-6 h-6" />,
+    icon: Shield,
     title: "Verified Talent",
-    description:
-      "Connect with verified professionals through identity verification and skill assessments before joining our platform.",
-    color: "bg-blue-500",
+    description: "Connect with verified professionals through identity verification and skill assessments.",
   },
   {
-    icon: <DollarSign className="w-6 h-6" />,
+    icon: DollarSign,
     title: "Secure Payments",
-    description:
-      "Funds are held in escrow and only released when you approve the work. Zero risk to you.",
-    color: "bg-emerald-500",
+    description: "Funds are held in escrow and only released when you approve the work. Zero risk.",
   },
   {
-    icon: <Clock className="w-6 h-6" />,
-    title: "Hire in 24 Hours",
-    description:
-      "Our matching algorithm connects you with the right talent fast. Most jobs receive proposals within 24 hours.",
-    color: "bg-orange-500",
+    icon: Clock,
+    title: "Fast Hiring",
+    description: "Our matching algorithm connects you with the right talent fast. Usually within 24 hours.",
   },
   {
-    icon: <Clock className="w-6 h-6" />,
-    title: "Hire in 24 Hours",
-    description:
-      "Our matching algorithm connects you with the right talent fast. Most jobs receive proposals within 24 hours.",
-    color: "bg-orange-500",
+    icon: CheckCircle2,
+    title: "Quality Work",
+    description: "Our rating system ensures high-quality deliverables from seasoned professionals.",
   },
   {
-    icon: <Headphones className="w-6 h-6" />,
+    icon: Headphones,
     title: "24/7 Support",
-    description:
-      "Our dedicated support team is always available to help you resolve disputes or answer questions.",
-    color: "bg-cyan-500",
+    description: "Our dedicated support team is always available to help you via chat, phone or email.",
   },
   {
-    icon: <Globe className="w-6 h-6" />,
-    title: "Global Talent Pool",
-    description:
-      "Access skilled professionals from 150+ countries with expertise in every domain imaginable.",
-    color: "bg-pink-500",
+    icon: Globe,
+    title: "Global Reach",
+    description: "Access skilled professionals from 180+ countries with expertise in every domain.",
   },
 ];
 
-function FeatureCard({
-  feature,
-  index,
-}: {
-  feature: FeatureCard;
-  index: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={`bg-white rounded-lg p-6 border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      style={{
-        transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
-      }}
-    >
-      <div
-        className={`${feature.color} w-12 h-12 rounded-lg flex items-center justify-center text-white mb-4`}
-      >
-        {feature.icon}
-      </div>
-      <h3 className="font-bold text-gray-900 mb-2 text-lg">{feature.title}</h3>
-      <p className="text-gray-600 text-sm leading-relaxed">
-        {feature.description}
-      </p>
-    </div>
-  );
-}
-
 export function FeaturesSection() {
-  const titleRef = useRef<HTMLDivElement>(null);
-  const [titleVisible, setTitleVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTitleVisible(true);
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    if (titleRef.current) observer.observe(titleRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-24 bg-slate-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          ref={titleRef}
-          className={`text-center mb-12 transition-all duration-700 ${
-            titleVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
-        >
-          <p className="text-emerald-600 text-sm font-semibold uppercase tracking-wide mb-2">
-            Our Advantage
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Why Choose Online Hat?
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            We built Online Hat to solve the problems every freelancer and
-            client faces on other platforms.
-          </p>
+        <div className="text-center mb-16">
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-primary text-sm font-bold uppercase tracking-widest mb-3"
+          >
+            Why Choose Us
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
+          >
+            Everything you need for success
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-slate-500 max-w-2xl mx-auto text-lg"
+          >
+            We've built a platform that tackles the biggest challenges in the freelance market.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <FeatureCard
-              key={`${feature.title}-${index}`}
-              feature={feature}
-              index={index}
-            />
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-3xl p-8 border border-slate-100 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <Icon size={28} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                <p className="text-slate-500 leading-relaxed">
+                  {feature.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

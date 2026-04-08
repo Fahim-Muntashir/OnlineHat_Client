@@ -1,190 +1,88 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Star } from "lucide-react";
+import { Star, Quote } from "lucide-react";
+import { motion } from "framer-motion";
 
-interface Testimonial {
-  id: string;
-  quote: string;
-  author: string;
-  role: string;
-  avatar: string;
-  rating: number;
-  color: string;
-}
-
-const testimonials: Testimonial[] = [
+const testimonials = [
   {
-    id: "1",
-    quote:
-      "Online Hat transformed how we hire. We found the perfect fit and shipped our MVP in 3 weeks. Absolutely world-class platform.",
+    quote: "Online Hat transformed how we hire. We found the perfect developer and shipped our MVP in 3 weeks. World-class platform.",
     author: "Rachael Kim",
     role: "Founder, LeverTech AI",
-    avatar: "RK",
-    rating: 5,
-    color: "bg-blue-500",
+    initials: "RK",
   },
   {
-    id: "3",
-    quote:
-      "We hired a full data science team through Online Hat for an ambitious analysis project. The talent was outstanding and the platform made managing contracts effortless.",
-    author: "Anita Osei",
-    role: "CTO, DataWise",
-    avatar: "AO",
-    rating: 5,
-    color: "bg-emerald-500",
-  },
-  {
-    id: "3",
-    quote:
-      "We hired a full data science team through Online Hat for an ambitious analysis project. The talent was outstanding and the platform made managing contracts effortless.",
-    author: "Anita Osei",
-    role: "CTO, DataWise",
-    avatar: "AO",
-    rating: 5,
-    color: "bg-emerald-500",
-  },
-  {
-    id: "4",
-    quote:
-      "Using Online Hat increased my hourly rate in the first 4 months. This job quality here is leagues above other platforms. Expect better projects and higher pay.",
+    quote: "The quality of talent here is leagues above other platforms. I've built my entire core team through Online Hat and couldn't be happier.",
     author: "James Patel",
-    role: "Freelance Developer",
-    avatar: "JP",
-    rating: 5,
-    color: "bg-orange-500",
+    role: "CTO, DataWise",
+    initials: "JP",
   },
   {
-    id: "5",
-    quote:
-      "I worked with top writer through Online Hat. The whole process — from posting to first draft — took less than a week.",
+    quote: "As a freelancer, this platform changed my career. Better clients, better projects, and the most secure payment system I've used.",
     author: "Lucia Ferrari",
-    role: "Marketing Director, Boom Co",
-    avatar: "LF",
-    rating: 5,
-    color: "bg-pink-500",
-  },
-  {
-    id: "5",
-    quote:
-      "I worked with top writer through Online Hat. The whole process — from posting to first draft — took less than a week.",
-    author: "Lucia Ferrari",
-    role: "Marketing Director, Boom Co",
-    avatar: "LF",
-    rating: 5,
-    color: "bg-pink-500",
+    role: "Senior UX Designer",
+    initials: "LF",
   },
 ];
 
-function TestimonialCard({
-  testimonial,
-  index,
-}: {
-  testimonial: Testimonial;
-  index: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={`bg-white rounded-lg p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      style={{
-        transitionDelay: isVisible ? `${index * 100}ms` : "0ms",
-      }}
-    >
-      <div className="flex gap-1 mb-4">
-        {Array.from({ length: testimonial.rating }).map((_, i) => (
-          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-        ))}
-      </div>
-
-      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-        {testimonial.quote}
-      </p>
-
-      <div className="flex items-center gap-3">
-        <div
-          className={`${testimonial.color} w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm`}
-        >
-          {testimonial.avatar}
-        </div>
-        <div>
-          <p className="font-semibold text-gray-900 text-sm">
-            {testimonial.author}
-          </p>
-          <p className="text-xs text-gray-500">{testimonial.role}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function TestimonialsSection() {
-  const titleRef = useRef<HTMLDivElement>(null);
-  const [titleVisible, setTitleVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTitleVisible(true);
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    if (titleRef.current) observer.observe(titleRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section className="py-16 bg-white">
+    <section className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          ref={titleRef}
-          className={`text-center mb-12 transition-all duration-700 ${
-            titleVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
-        >
-          <p className="text-emerald-600 text-sm font-semibold uppercase tracking-wide mb-2">
-            Success Stories
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Loved by Clients & Freelancers
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Thousands of people have found their ideal match on Online Hat.
-            Here&apos;s what they say.
-          </p>
+        <div className="text-center mb-16">
+          <motion.p 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-3"
+          >
+            Testimonials
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl font-black text-slate-900 mb-6"
+          >
+            What our community says
+          </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard
-              key={`${testimonial.id}-${index}`}
-              testimonial={testimonial}
-              index={index}
-            />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          {/* Decorative background circle */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+          
+          {testimonials.map((t, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.15, duration: 0.6 }}
+              className="relative bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 group"
+            >
+              <Quote className="absolute top-8 right-8 w-12 h-12 text-slate-50 group-hover:text-primary/10 transition-colors duration-500" strokeWidth={4} />
+              
+              <div className="flex gap-1 mb-6">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} size={16} className="fill-primary text-primary" />
+                ))}
+              </div>
+
+              <p className="text-slate-600 mb-8 italic text-lg leading-relaxed relative z-10">
+                "{t.quote}"
+              </p>
+
+              <div className="flex items-center gap-4 border-t border-slate-50 pt-6">
+                <div className="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-sm tracking-tighter">
+                  {t.initials}
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 leading-tight">{t.author}</h4>
+                  <p className="text-xs text-slate-400 font-medium">{t.role}</p>
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -1,27 +1,32 @@
 "use client";
 
 import { Users, Building2, Heart, Globe } from "lucide-react";
+import { CountUp } from "@/components/shared/CountUp";
 
 export default function Stats() {
   const stats = [
     {
       icon: Users,
-      number: "50,000+",
+      value: 50000,
+      suffix: "+",
       label: "Active Freelancers",
     },
     {
       icon: Building2,
-      number: "120,000+",
+      value: 120000,
+      suffix: "+",
       label: "Projects Completed",
     },
     {
       icon: Heart,
-      number: "30,000+",
+      value: 30000,
+      suffix: "+",
       label: "Happy Clients",
     },
     {
       icon: Globe,
-      number: "190+",
+      value: 190,
+      suffix: "+",
       label: "Countries Covered",
     },
   ];
@@ -38,7 +43,11 @@ export default function Stats() {
                   <IconComponent className="w-8 h-8" />
                 </div>
                 <div className="text-4xl md:text-5xl font-bold mb-2">
-                  {stat.number}
+                  <CountUp 
+                    to={stat.value} 
+                    suffix={stat.suffix} 
+                    delay={index * 0.15} 
+                  />
                 </div>
                 <div className="text-primary-foreground/80 text-sm">
                   {stat.label}

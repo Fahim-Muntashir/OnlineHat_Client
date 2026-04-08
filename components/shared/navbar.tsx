@@ -43,15 +43,18 @@ export const Navbar = () => {
           Online Hat
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm text-slate-500">
-          <Link
-            href="/services"
-            className="hover:text-primary transition-colors"
-          >
-            Browse Services
+        <nav className="hidden md:flex items-center gap-6 text-sm text-slate-500 font-medium">
+          <Link href="/services" className="hover:text-primary transition-colors">
+            Browse
           </Link>
-          <Link href="/about" className="hover:text-primary transition-colors">
-            About
+          <Link href="/#categories" className="hover:text-primary transition-colors">
+            Categories
+          </Link>
+          <Link href="/#freelancers" className="hover:text-primary transition-colors">
+            Freelancers
+          </Link>
+          <Link href="/#how-it-works" className="hover:text-primary transition-colors">
+            How it works
           </Link>
         </nav>
 

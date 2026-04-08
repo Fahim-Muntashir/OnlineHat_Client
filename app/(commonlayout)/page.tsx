@@ -50,6 +50,7 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
+        id="categories"
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
@@ -86,6 +87,7 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
+        id="freelancers"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -95,6 +97,7 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
+        id="how-it-works"
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
@@ -126,6 +129,7 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
+        id="services"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

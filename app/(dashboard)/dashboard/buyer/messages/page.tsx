@@ -8,7 +8,7 @@ const MessagesPage = () => {
     <div className="space-y-6">
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-slate-800">Inbox</h1>
-        <p className="text-sm text-slate-500">Manage your conversations with buyers</p>
+        <p className="text-sm text-slate-500">Manage your conversations with sellers</p>
       </div>
       <Chat />
     </div>

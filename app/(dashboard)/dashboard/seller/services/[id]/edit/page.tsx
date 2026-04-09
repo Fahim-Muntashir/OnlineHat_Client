@@ -1,19 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { z } from "zod";
 import {
   Plus,
   ArrowLeft,
   Package,
   Image as ImageIcon,
-  Tag,
   FileText,
-  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -21,41 +18,43 @@ import axiosInstance from "@/lib/axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PackageCard } from "./_components/PackageCard";
+import { PackageCard } from "../../new/_components/PackageCard";
 import { ImageUpload } from "@/components/ImageUpload";
 
-// ---------- Zod Fixes ----------
-const titleSchema = z.string().min(10, "Title must be at least 10 characters");
-const descSchema = z
-  .string()
-  .min(20, "Description must be at least 20 characters");
-const categorySchema = z.string().uuid("Please select a category");
-
-export default function CreateServicePage() {
+export default function EditServicePage() {
   const router = useRouter();
-  const [packages, setPackages] = useState<any[]>([
-    {
-      type: "BASIC",
-      title: "",
-      description: "",
-      price: "",
-      deliveryDays: "",
-      revisions: "",
-    },
-  ]);
-  const [images, setImages] = useState<string[]>([]);
-  const [imageUrl, setImageUrl] = useState("");
+  const params = useParams();
+  const queryClient = useQueryClient();
+  const serviceId = params?.id as string;
 
+  const [packages, setPackages] = useState<any[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Fetch categories
   const { data: categoriesData } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => (await axiosInstance.get("/categories")).data,
   });
 
-  const { mutate: createService, isPending } = useMutation({
+  // Fetch specific service
+  const { data: serviceData, isLoading: isLoadingService } = useQuery({
+    queryKey: ["service", serviceId],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/services/${serviceId}`);
+      return res.data;
+    },
+    enabled: !!serviceId,
+  });
+
+  const { mutate: updateService, isPending } = useMutation({
     mutationFn: async (payload: any) =>
-      (await axiosInstance.post("/services", payload)).data,
+      (await axiosInstance.put(`/services/${serviceId}`, payload)).data,
     onSuccess: () => {
-      toast.success("Service published!");
+      toast.success("Service updated!");
+      queryClient.invalidateQueries({ queryKey: ["seller-services"] });
+      // Invalidate the specific service cache
+      queryClient.invalidateQueries({ queryKey: ["service", serviceId] });
       router.push("/dashboard/seller/services");
     },
     onError: (err: any) => {
@@ -68,7 +67,6 @@ export default function CreateServicePage() {
     onSubmit: ({ value }) => {
       if (images.length === 0) return toast.error("Add at least one image");
 
-      // Basic validation for packages
       const isInvalid = packages.some(
         (p) => !p.title || !p.price || !p.deliveryDays,
       );
@@ -84,15 +82,47 @@ export default function CreateServicePage() {
           revisions: p.revisions ? parseInt(p.revisions) : undefined,
         })),
       };
-      createService(payload);
+      updateService(payload);
     },
   });
 
-  const addImage = () => {
-    if (!imageUrl.trim()) return;
-    setImages((prev) => [...prev, imageUrl.trim()]);
-    setImageUrl("");
-  };
+  // Pre-fill form when service data arrives
+  useEffect(() => {
+    if (serviceData?.data && !isInitialized) {
+      const s = serviceData.data;
+      form.setFieldValue("title", s.title || "");
+      form.setFieldValue("description", s.description || "");
+      form.setFieldValue("categoryId", s.categoryId || "");
+      setImages(s.images || []);
+      
+      if (s.packages && s.packages.length > 0) {
+        setPackages(
+          s.packages.map((p: any) => ({
+            ...p,
+            price: p.price.toString(),
+            deliveryDays: p.deliveryDays.toString(),
+            revisions: p.revisions ? p.revisions.toString() : "",
+          }))
+        );
+      } else {
+        setPackages([
+          {
+            type: "BASIC",
+            title: "",
+            description: "",
+            price: "",
+            deliveryDays: "",
+            revisions: "",
+          },
+        ]);
+      }
+      setIsInitialized(true);
+    }
+  }, [serviceData, isInitialized, form]);
+
+  if (isLoadingService) {
+    return <div className="p-8 text-center text-slate-500">Loading service data...</div>;
+  }
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 bg-slate-50/50 min-h-screen">
@@ -104,9 +134,9 @@ export default function CreateServicePage() {
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Create Service</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Edit Service</h1>
           <p className="text-slate-500 text-sm">
-            List your professional skills.
+            Update your professional skills.
           </p>
         </div>
       </div>
@@ -245,7 +275,7 @@ export default function CreateServicePage() {
             disabled={isPending}
             type="submit"
           >
-            {isPending ? "Creating..." : "Publish Service"}
+            {isPending ? "Updating..." : "Save Changes"}
           </Button>
         </div>
       </form>

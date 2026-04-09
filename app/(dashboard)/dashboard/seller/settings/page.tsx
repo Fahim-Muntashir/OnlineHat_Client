@@ -10,6 +10,7 @@ import { Save, User, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const bioSchema = z.string().max(300, "Bio max 300 characters").optional();
 const skillSchema = z.string().min(1, "Cannot be empty");
@@ -52,10 +53,12 @@ export default function SellerSettingsPage() {
       bio: profile?.bio ?? "",
       skills: profile?.skills?.join(", ") ?? "",
       portfolio: profile?.portfolio?.join(", ") ?? "",
+      profileImage: profile?.profileImage ?? "",
     },
     onSubmit: ({ value }) => {
       updateProfile({
         bio: value.bio,
+        profileImage: value.profileImage,
         skills: value.skills
           .split(",")
           .map((s: string) => s.trim())
@@ -71,7 +74,7 @@ export default function SellerSettingsPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
         <p className="text-sm text-gray-500 mt-1">
           Update your seller profile and preferences
         </p>
@@ -117,8 +120,22 @@ export default function SellerSettingsPage() {
             e.preventDefault();
             form.handleSubmit();
           }}
-          className="space-y-4"
+          className="space-y-6"
         >
+          {/* Profile Image */}
+          <form.Field name="profileImage">
+            {(field) => (
+              <div className="space-y-2">
+                <Label className="text-xs text-gray-500 uppercase tracking-wider font-bold">Profile Image</Label>
+                <ImageUpload
+                  value={field.state.value}
+                  onChange={(url) => field.handleChange(url as string)}
+                  multiple={false}
+                />
+              </div>
+            )}
+          </form.Field>
+
           {/* Bio */}
           <form.Field
             name="bio"

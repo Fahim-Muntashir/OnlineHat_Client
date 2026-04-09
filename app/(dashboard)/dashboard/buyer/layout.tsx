@@ -45,7 +45,7 @@ const navItems = [
     icon: MessageSquare,
   },
   {
-    label: "Settings",
+    label: "Profile",
     href: "/dashboard/buyer/settings",
     icon: Settings,
   },

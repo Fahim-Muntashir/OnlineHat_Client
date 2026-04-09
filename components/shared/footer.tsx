@@ -10,10 +10,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-foreground text-lg font-bold">
-                FH
-              </div>
-              <span className="font-bold text-lg">Online Hat</span>
+              <img src="/logo.png" alt="Online Hat" className="h-10 w-auto invert brightness-0" />
             </div>
             <p className="text-sm text-primary-foreground/70">
               Connecting talented professionals with amazing opportunities

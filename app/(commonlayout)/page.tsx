@@ -39,7 +39,7 @@ export default function HomePage() {
   return (
     <div className=" bg-white overflow-x-hidden">
       <HeroSection />
-      
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -69,12 +69,16 @@ export default function HomePage() {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <FeaturesSection />
+        <ServicesSection
+          title="Featured Services"
+          subtitle="Hand-picked top services"
+          services={featured}
+        />
       </motion.div>
 
       <motion.div
@@ -85,7 +89,7 @@ export default function HomePage() {
       >
         <TestimonialsSection />
       </motion.div>
-
+      {/* 
       <motion.div
         id="freelancers"
         initial={{ opacity: 0, y: 30 }}
@@ -94,7 +98,7 @@ export default function HomePage() {
         transition={{ duration: 0.6 }}
       >
         <FeaturedFreelancers />
-      </motion.div>
+      </motion.div> */}
 
       <motion.div
         id="how-it-works"
@@ -115,32 +119,7 @@ export default function HomePage() {
         <CTASection />
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <ServicesSection
-          title="Featured Services"
-          subtitle="Hand-picked top services"
-          services={featured}
-        />
-      </motion.div>
 
-      <motion.div
-        id="services"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <ServicesSection
-          title="⭐ Top Rated"
-          subtitle="Highest rated by buyers"
-          services={topRated.slice(0, 4)}
-        />
-      </motion.div>
     </div>
   );
 }

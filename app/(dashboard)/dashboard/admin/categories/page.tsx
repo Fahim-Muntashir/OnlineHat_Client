@@ -10,6 +10,7 @@ import { Plus, Trash2, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const nameSchema = z.string().min(2, "Name must be at least 2 characters");
 
@@ -112,13 +113,13 @@ export default function AdminCategoriesPage() {
 
           <form.Field name="icon">
             {(field) => (
-              <Input
-                placeholder="Icon URL (optional)"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                disabled={isCreating}
-                className="bg-slate-50 border-slate-200 sm:w-52"
-              />
+              <div className="flex-1">
+                 <ImageUpload
+                  value={field.state.value}
+                  onChange={(url) => field.handleChange(url as string)}
+                  multiple={false}
+                />
+              </div>
             )}
           </form.Field>
 

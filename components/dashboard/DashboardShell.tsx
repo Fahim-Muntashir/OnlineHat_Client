@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AuthStore } from "@/store/authStore";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -24,6 +24,8 @@ import {
   User,
   X,
 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axios";
 
 export interface NavItem {
   label: string;
@@ -36,7 +38,7 @@ export interface NavItem {
 interface DashboardShellProps {
   children: React.ReactNode;
   navItems: NavItem[];
-  role: "ADMIN" | "BUYER";
+  role: "ADMIN" | "BUYER" | "SELLER";
   accentColor: string;
   accentBg: string;
   accentText: string;
@@ -45,7 +47,7 @@ interface DashboardShellProps {
 
 export function DashboardShell({
   children,
-  navItems,
+  navItems: initialNavItems,
   role,
   accentColor,
   accentBg,
@@ -65,6 +67,26 @@ export function DashboardShell({
     }
     setUser(u);
   }, [role, router]);
+
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/users/notifications");
+      return res.data.data;
+    },
+    refetchInterval: 5000, // Poll every 5s
+    enabled: !!user,
+  });
+
+  const navItems = initialNavItems.map((item) => {
+    if (item.label === "Messages" && notifications?.unreadMessages > 0) {
+      return { ...item, badge: notifications.unreadMessages.toString() };
+    }
+    if (item.label === "Orders" && notifications?.activeOrders > 0) {
+      return { ...item, badge: notifications.activeOrders.toString() };
+    }
+    return item;
+  });
 
   const handleLogout = () => {
     AuthStore.clearAuth();
@@ -96,16 +118,9 @@ export function DashboardShell({
         )}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center px-5 border-b border-slate-100">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div
-              className={`h-8 w-8 rounded-xl ${accentColor} flex items-center justify-center shadow-sm`}
-            >
-              <span className="text-xs font-black text-white">S</span>
-            </div>
-            <span className="text-sm font-bold text-slate-800 tracking-tight">
-              Online Hat
-            </span>
+        <div className="h-20 flex items-center px-5 border-b border-slate-100">
+          <Link href="/" className="flex items-center gap-2">
+            <img src="/logo.png" alt="Online Hat" className="h-10 w-auto" />
           </Link>
           <button
             className="ml-auto lg:hidden text-slate-400 hover:text-slate-600"
@@ -119,6 +134,7 @@ export function DashboardShell({
         <div className="px-4 py-4 border-b border-slate-100">
           <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50">
             <Avatar className="h-9 w-9 shrink-0">
+              <AvatarImage src={user?.profileImage} />
               <AvatarFallback
                 className={`${accentColor} text-white text-sm font-bold`}
               >
@@ -208,23 +224,26 @@ export function DashboardShell({
             className={`relative h-9 w-9 rounded-xl ${accentBg} flex items-center justify-center ${accentText} hover:opacity-80 transition-all`}
           >
             <Bell size={16} />
-            <span
-              className={`absolute top-1.5 right-1.5 h-2 w-2 rounded-full ${accentColor}`}
-            />
+            {(notifications?.unreadMessages > 0 || notifications?.activeOrders > 0) && (
+              <span
+                className={`absolute -top-1 -right-1 h-4 min-w-4 flex items-center justify-center rounded-full ${accentColor} text-white text-[10px] font-bold px-1 border-2 border-white`}
+              >
+                {(notifications.unreadMessages + notifications.activeOrders) > 9 ? "9+" : (notifications.unreadMessages + notifications.activeOrders)}
+              </span>
+            )}
           </button>
 
           {/* Avatar dropdown */}
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <button className="outline-none">
-                <Avatar className="h-9 w-9 cursor-pointer">
-                  <AvatarFallback
-                    className={`${accentColor} text-white text-sm font-bold`}
-                  >
-                    {user?.name?.charAt(0).toUpperCase() ?? "U"}
-                  </AvatarFallback>
-                </Avatar>
-              </button>
+            <DropdownMenuTrigger className="outline-none block rounded-full">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={user?.profileImage} />
+                <AvatarFallback
+                  className={`${accentColor} text-white text-sm font-bold`}
+                >
+                  {user?.name?.charAt(0).toUpperCase() ?? "U"}
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-48">
@@ -233,9 +252,12 @@ export function DashboardShell({
                 Profile
               </DropdownMenuItem>
 
-              <DropdownMenuItem className="text-slate-600 cursor-pointer">
-                <Settings size={14} className="mr-2" />
-                Settings
+              <DropdownMenuItem 
+                onClick={() => router.push(`/dashboard/${role.toLowerCase()}/settings`)}
+                className="text-slate-600 cursor-pointer"
+              >
+                <User size={14} className="mr-2" />
+                Profile Info
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />

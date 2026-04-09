@@ -11,6 +11,7 @@ import { Save, User, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const getError = (errors: any[]): string | null => {
   if (!errors?.length) return null;
@@ -48,12 +49,14 @@ export default function BuyerSettingsPage() {
       bio: profile?.bio ?? "",
       phone: profile?.phone ?? "",
       address: profile?.address ?? "",
+      profileImage: profile?.profileImage ?? "",
     },
     onSubmit: ({ value }) => {
       updateProfile({
         bio: value.bio || undefined,
         phone: value.phone || undefined,
         address: value.address || undefined,
+        profileImage: value.profileImage || undefined,
       });
     },
   });
@@ -61,7 +64,7 @@ export default function BuyerSettingsPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Settings</h1>
+        <h1 className="text-2xl font-bold text-slate-800">Profile Settings</h1>
         <p className="text-sm text-slate-400 mt-1">
           Manage your account preferences
         </p>
@@ -107,8 +110,22 @@ export default function BuyerSettingsPage() {
             e.preventDefault();
             form.handleSubmit();
           }}
-          className="space-y-4"
+          className="space-y-6"
         >
+          {/* Profile Image */}
+          <form.Field name="profileImage">
+            {(field) => (
+              <div className="space-y-2">
+                <Label className="text-xs text-slate-400 font-bold uppercase tracking-wider">Profile Image</Label>
+                <ImageUpload
+                  value={field.state.value}
+                  onChange={(url) => field.handleChange(url as string)}
+                  multiple={false}
+                />
+              </div>
+            )}
+          </form.Field>
+
           {/* Bio */}
           <form.Field name="bio">
             {(field) => (

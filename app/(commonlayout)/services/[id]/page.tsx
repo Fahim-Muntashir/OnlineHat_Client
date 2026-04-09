@@ -4,7 +4,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axios";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Star,
@@ -16,6 +16,7 @@ import {
   Heart,
   Share2,
   ChevronRight,
+  MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -61,12 +62,18 @@ const StarRating = ({ rating, count }: { rating: number; count?: number }) => (
 export default function ServiceDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const id = params.id as string;
+  const id = params?.id as string;
 
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
 
-  const user = AuthStore.getUser();
+  const [user, setUser] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setUser(AuthStore.getUser());
+  }, []);
 
   const { data, isLoading } = useQuery({
     queryKey: ["service", id],
@@ -74,6 +81,7 @@ export default function ServiceDetailPage() {
       const res = await axiosInstance.get(`/services/${id}`);
       return res.data;
     },
+    enabled: !!id,
   });
 
   const { data: reviewsData } = useQuery({
@@ -82,12 +90,13 @@ export default function ServiceDetailPage() {
       const res = await axiosInstance.get(`/reviews/service/${id}`);
       return res.data;
     },
+    enabled: !!id,
   });
 
   const service = data?.data;
   const reviews = reviewsData?.data ?? [];
 
-  if (isLoading) {
+  if (!mounted || isLoading || !id) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="space-y-4 w-full max-w-4xl px-4">
@@ -246,10 +255,39 @@ export default function ServiceDetailPage() {
                     {service.seller?.user?.name?.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                <div className="space-y-1">
-                  <p className="font-semibold text-slate-800">
-                    {service.seller?.user?.name}
-                  </p>
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-slate-800">
+                      {service.seller?.user?.name}
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-2 border-primary/20 text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                      onClick={async () => {
+                        if (!user) {
+                          router.push("/login");
+                          return;
+                        }
+                        if (user.role !== "BUYER") {
+                          alert("Only buyers can contact sellers directly.");
+                          return;
+                        }
+                        try {
+                          const res = await axiosInstance.post(
+                            "/chat/get-or-create-conversation",
+                            { sellerId: service.sellerId },
+                          );
+                          router.push("/dashboard/buyer/messages");
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                    >
+                      <MessageSquare size={14} />
+                      Contact Seller
+                    </Button>
+                  </div>
                   {service.seller?.bio && (
                     <p className="text-sm text-slate-500 leading-relaxed">
                       {service.seller.bio}
@@ -353,7 +391,7 @@ export default function ServiceDetailPage() {
                         selectedPackage === pkg.id
                           ? "border-primary bg-primary/5"
                           : (PACKAGE_COLORS[pkg.type] ??
-                              "border-slate-200 hover:border-slate-300"),
+                            "border-slate-200 hover:border-slate-300"),
                       )}
                     >
                       <div className="flex items-center justify-between">

@@ -11,6 +11,8 @@ import {
   Package,
   Image as ImageIcon,
   FileText,
+  Sparkles,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -30,6 +32,7 @@ export default function EditServicePage() {
   const [packages, setPackages] = useState<any[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // Fetch categories
   const { data: categoriesData } = useQuery({
@@ -120,6 +123,26 @@ export default function EditServicePage() {
     }
   }, [serviceData, isInitialized, form]);
 
+  const handleGenerateAIDescription = async () => {
+    const title = form.getFieldValue("title");
+    if (!title || title.length < 10) {
+      return toast.error("Please enter a clear title (at least 10 chars)");
+    }
+
+    try {
+      setIsGenerating(true);
+      const response = await axiosInstance.post("/ai/generate-description", {
+        title,
+      });
+      form.setFieldValue("description", response.data.data);
+      toast.success("AI Description generated!");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Generation failed");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   if (isLoadingService) {
     return <div className="p-8 text-center text-slate-500">Loading service data...</div>;
   }
@@ -160,7 +183,24 @@ export default function EditServicePage() {
           <form.Field name="title">
             {(field) => (
               <div className="space-y-2">
-                <Label className="text-slate-700">Service Title</Label>
+                <div className="flex items-center justify-between">
+                  <Label className="text-slate-700">Service Title</Label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 h-8 gap-1.5"
+                    onClick={handleGenerateAIDescription}
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? (
+                      <Loader2 size={14} className="animate-spin" />
+                    ) : (
+                      <Sparkles size={14} />
+                    )}
+                    AI Writer
+                  </Button>
+                </div>
                 <Input
                   className="border-slate-200 focus:ring-indigo-500"
                   placeholder="I will build a high-performance website..."
